@@ -23,17 +23,18 @@ public class Bullet {
     
     private final Texture tex;
     private final Sprite sp;
-    private final float vel = 1000;
+    private final float vel;
     private final float velx, vely;
     
     private Body body;
     
-    public Bullet(Vector2 position, float angle){
+    public Bullet(Vector2 position, float angle, float bulletVel){
         tex = new Texture("bullet01tex.png");
         tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         sp = new Sprite(tex);
         sp.setScale(0.3f);
-        sp.setPosition(position.x, position.y);
+        this.vel = bulletVel;
+        
         velx = (float)(vel * Math.cos(angle))/Scene.PIXELS_TO_METERS;
         vely = (float)(vel * Math.sin(angle))/Scene.PIXELS_TO_METERS;
         
@@ -56,11 +57,16 @@ public class Bullet {
 
         body.createFixture(fixtureDef);
         shape.dispose();
+        
+        body.setTransform(position, body.getAngle());
+        sp.setPosition((body.getPosition().x * Scene.PIXELS_TO_METERS) - sp.getWidth()/2 ,
+                (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );
     }
     
     public void update(){
         body.setLinearVelocity(velx, vely);
-        sp.setPosition(body.getPosition().x * Scene.PIXELS_TO_METERS, body.getPosition().y * Scene.PIXELS_TO_METERS);
+        sp.setPosition((body.getPosition().x * Scene.PIXELS_TO_METERS) - sp.getWidth()/2 ,
+                        (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );    
     }
     
     public void render(SpriteBatch batcher){

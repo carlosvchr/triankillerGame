@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -30,7 +31,10 @@ public class Player {
     private final Texture tex;
     private final Sprite sp;
     boolean movingUp, movingDown, movingRight, movingLeft, shooting, shooting2;
-    Weapon weapon;
+    private Weapon weapon[];
+    private int maxWeapons;
+    private int currentWeapon;   
+    
     
     private Body body;
     
@@ -48,7 +52,14 @@ public class Player {
         shooting = false;
         shooting2 = false;
         
-        weapon = new Weapon(Weapon.REGULAR);
+        maxWeapons = 3;
+        
+        weapon = new Weapon[maxWeapons];
+        weapon[0] = new Weapon(Weapon.REGULAR);
+        weapon[1] = new Weapon(Weapon.FAST);
+        weapon[2] = new Weapon(Weapon.SLOW);
+        
+        currentWeapon = 0;
         
         
         BodyDef bodyDef = new BodyDef();
@@ -56,13 +67,20 @@ public class Player {
         bodyDef.position.set((sp.getX() + sp.getWidth()/2) / Scene.PIXELS_TO_METERS,
                 (sp.getY() + sp.getHeight()/2) / Scene.PIXELS_TO_METERS);
 
+        bodyDef.bullet = true;
         body = Scene.world.createBody(bodyDef);
+        body.setFixedRotation(true);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(sp.getWidth()/2 / Scene.PIXELS_TO_METERS, sp.getHeight()/2 / Scene.PIXELS_TO_METERS);
+        Vector2 vertices[] = new Vector2[3];
+        vertices[0] = new Vector2(-sp.getWidth()*sp.getScaleX()/2/Scene.PIXELS_TO_METERS, -sp.getScaleY()*sp.getHeight()/2/Scene.PIXELS_TO_METERS);
+        vertices[1] = new Vector2(0, sp.getScaleY()*sp.getHeight()/2/Scene.PIXELS_TO_METERS);
+        vertices[2] = new Vector2(sp.getWidth()*sp.getScaleX()/2/Scene.PIXELS_TO_METERS, -sp.getScaleY()*sp.getHeight()/2/Scene.PIXELS_TO_METERS);
+        shape.set(vertices);
         
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
+        fixtureDef.friction = 1000f;
         fixtureDef.density = 1f;
         fixtureDef.restitution = 0.5f;
 
@@ -111,7 +129,10 @@ public class Player {
     }
     
     public void shoot(){
-        weapon.shoot(body);
+        float px = body.getPosition().x + sp.getHeight()*sp.getScaleY()/Scene.PIXELS_TO_METERS * (float)Math.cos(body.getAngle());
+        float py = body.getPosition().y + sp.getHeight()*sp.getScaleY()/Scene.PIXELS_TO_METERS * (float)Math.sin(body.getAngle());
+
+        weapon[currentWeapon].shoot(new Vector2(px, py), 90 + body.getTransform().getRotation());
         
     }
     
@@ -120,11 +141,13 @@ public class Player {
     }
     
     public void nextWeapon(){
-        // TODO
+        currentWeapon += 1;
+        if(currentWeapon >= maxWeapons){currentWeapon = 0;}
     }
     
     public void prevWeapon(){
-        // TODO
+        currentWeapon -= 1;
+        if(currentWeapon < 0){currentWeapon = maxWeapons-1;}
     }
     
     public void render(SpriteBatch batcher){
