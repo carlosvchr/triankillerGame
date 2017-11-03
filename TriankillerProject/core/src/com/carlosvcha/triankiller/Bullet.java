@@ -35,8 +35,8 @@ public class Bullet {
         sp.setScale(0.3f);
         this.vel = bulletVel;
         
-        velx = (float)(vel * Math.cos(angle))/Scene.PIXELS_TO_METERS;
-        vely = (float)(vel * Math.sin(angle))/Scene.PIXELS_TO_METERS;
+        velx = (float)(vel * Math.cos(angle));
+        vely = (float)(vel * Math.sin(angle));
         
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -58,13 +58,15 @@ public class Bullet {
         body.createFixture(fixtureDef);
         shape.dispose();
         
+        
         body.setTransform(position, body.getAngle());
         sp.setPosition((body.getPosition().x * Scene.PIXELS_TO_METERS) - sp.getWidth()/2 ,
                 (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );
+        
+        body.applyForceToCenter(velx, vely, true);
     }
     
     public void update(){
-        body.setLinearVelocity(velx, vely);
         sp.setPosition((body.getPosition().x * Scene.PIXELS_TO_METERS) - sp.getWidth()/2 ,
                         (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );    
     }
@@ -82,9 +84,6 @@ public class Bullet {
     }
     
     public boolean outOfField(){
-        return (sp.getX() < -(Gdx.graphics.getHeight()/2 + sp.getWidth())) ||
-               (sp.getY() < -(Gdx.graphics.getHeight()/2 + sp.getHeight())) ||
-               (sp.getX() > Gdx.graphics.getWidth()/2) ||
-               (sp.getY() > Gdx.graphics.getHeight()/2);
+        return false;
     }
 }

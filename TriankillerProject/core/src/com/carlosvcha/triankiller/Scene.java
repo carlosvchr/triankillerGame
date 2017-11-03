@@ -34,7 +34,7 @@ public class Scene extends ApplicationAdapter {
     private Box2DDebugRenderer debugRenderer;
     Matrix4 debugMatrix;
     public static final float PIXELS_TO_METERS = 100f;
-    Body bodyEdgeScreen;
+    Body bodyEdgeScreen, bodyEdgeScreen2, bodyEdgeScreen3, bodyEdgeScreen4;
     
     @Override
     public void create () {
@@ -59,8 +59,8 @@ public class Scene extends ApplicationAdapter {
     public void setFieldLimits(){
         BodyDef groundDef = new BodyDef();
         groundDef.type = BodyDef.BodyType.StaticBody;
-        float w = Gdx.graphics.getWidth()/PIXELS_TO_METERS;
-        float h = Gdx.graphics.getHeight()/PIXELS_TO_METERS- 50/PIXELS_TO_METERS;
+        float w = Gdx.graphics.getWidth()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        float h = Gdx.graphics.getHeight()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
         groundDef.position.set(0,0);
         FixtureDef fixtureDef2 = new FixtureDef();
 
@@ -71,6 +71,51 @@ public class Scene extends ApplicationAdapter {
         bodyEdgeScreen = world.createBody(groundDef);
         bodyEdgeScreen.createFixture(fixtureDef2);
         edgeShape.dispose();
+        
+        BodyDef groundDef2 = new BodyDef();
+        groundDef2.type = BodyDef.BodyType.StaticBody;
+        float w2 = Gdx.graphics.getWidth()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        float h2 = Gdx.graphics.getHeight()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        groundDef2.position.set(0,0);
+        FixtureDef fixtureDef22 = new FixtureDef();
+
+        EdgeShape edgeShape2 = new EdgeShape();
+        edgeShape2.set(-w2/2,h2/2,w2/2,h2/2);
+        fixtureDef22.shape = edgeShape2;
+
+        bodyEdgeScreen = world.createBody(groundDef2);
+        bodyEdgeScreen.createFixture(fixtureDef22);
+        edgeShape2.dispose();
+        
+        BodyDef groundDef3 = new BodyDef();
+        groundDef3.type = BodyDef.BodyType.StaticBody;
+        float w3 = Gdx.graphics.getWidth()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        float h3 = Gdx.graphics.getHeight()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        groundDef3.position.set(0,0);
+        FixtureDef fixtureDef23 = new FixtureDef();
+
+        EdgeShape edgeShape3 = new EdgeShape();
+        edgeShape3.set(w3/2,-h3/2,w3/2,h3/2);
+        fixtureDef23.shape = edgeShape2;
+
+        bodyEdgeScreen = world.createBody(groundDef3);
+        bodyEdgeScreen.createFixture(fixtureDef23);
+        edgeShape3.dispose();
+        
+        BodyDef groundDef4 = new BodyDef();
+        groundDef4.type = BodyDef.BodyType.StaticBody;
+        float w4 = Gdx.graphics.getWidth()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        float h4 = Gdx.graphics.getHeight()/PIXELS_TO_METERS - 20/PIXELS_TO_METERS;
+        groundDef4.position.set(0,0);
+        FixtureDef fixtureDef24 = new FixtureDef();
+
+        EdgeShape edgeShape4 = new EdgeShape();
+        edgeShape4.set(-w4/2,-h4/2,-w4/2,h4/2);
+        fixtureDef24.shape = edgeShape2;
+
+        bodyEdgeScreen = world.createBody(groundDef4);
+        bodyEdgeScreen.createFixture(fixtureDef24);
+        edgeShape4.dispose();
     }
 
     @Override
@@ -130,7 +175,7 @@ public class Scene extends ApplicationAdapter {
     }
 
     private void genSquares(){
-        Square sq = new Square(new Vector2(0,0), 50, 180, 200);
+        Square sq = new Square(new Vector2(0,0), 5, 180, 200);
         squares.add(sq);
     }
     

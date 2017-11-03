@@ -28,19 +28,18 @@ public class Weapon {
         switch(weapon){
             case REGULAR:
                 cooldownTime = 200;
-                bulletVel = 5f;
+                bulletVel = 0.15f;
                 break;
             case FAST:
                 cooldownTime = 50;
-                bulletVel = 7.5f;
+                bulletVel = 0.3f;
                 break;
             case SLOW:
                 cooldownTime = 500;
-                bulletVel = 3.5f;
+                bulletVel = 0.05f;
                 break;
         }
         
-        bulletVel *= Scene.PIXELS_TO_METERS;
     }
     
     private boolean isReady(){

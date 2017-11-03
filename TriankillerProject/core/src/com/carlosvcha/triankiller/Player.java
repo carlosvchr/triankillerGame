@@ -129,10 +129,10 @@ public class Player {
     }
     
     public void shoot(){
-        float px = body.getPosition().x + sp.getHeight()*sp.getScaleY()/Scene.PIXELS_TO_METERS * (float)Math.cos(body.getAngle());
-        float py = body.getPosition().y + sp.getHeight()*sp.getScaleY()/Scene.PIXELS_TO_METERS * (float)Math.sin(body.getAngle());
+        float px = body.getPosition().x + sp.getWidth()/2*sp.getScaleX()/Scene.PIXELS_TO_METERS * (float)Math.cos(Math.PI/2+body.getAngle());
+        float py = body.getPosition().y + sp.getHeight()/1.5f*sp.getScaleY()/Scene.PIXELS_TO_METERS * (float)Math.sin(Math.PI/2+body.getAngle());
 
-        weapon[currentWeapon].shoot(new Vector2(px, py), 90 + body.getTransform().getRotation());
+        weapon[currentWeapon].shoot(new Vector2(px, py), (float)Math.PI/2 + body.getAngle());
         
     }
     
