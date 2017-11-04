@@ -5,7 +5,6 @@
  */
 package com.carlosvcha.triankiller;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,11 +26,13 @@ public class Square {
     private float vel;
     private float dir;
     private Body body;
+    private int level;
     
-    public Square(Vector2 pos, float vel, float direction, float rotVel){
+    public Square(Vector2 pos, float vel, float direction, float rotVel, int level){
         tex = new Texture("square01tex.png");
         sp = new Sprite(tex);
-        sp.setScale(0.7f);
+        //sp.setScale(level/10);
+        this.level = level;
         
         this.rotVel = rotVel;
         this.vel = vel;
@@ -58,6 +59,8 @@ public class Square {
         
         body.applyForceToCenter(new Vector2((float)Math.random()*80-40, (float)Math.random()*60-30), true);
         body.applyAngularImpulse((float)Math.random()*0.1f, true);
+        
+        body.setUserData(this);
     }
     
     public void update(){
@@ -73,6 +76,19 @@ public class Square {
     
     public void dispose(){
         tex.dispose();
+        Scene.world.destroyBody(body);
     }
+    
+    public void splitSquare(){
+        /*this.dispose();
+        Scene.squares.remove(this);
+        float velocity = (float) Math.sqrt(Math.pow(body.getLinearVelocity().x,2)+Math.pow(body.getLinearVelocity().y, 2));
+        Square sq = new Square(body.getPosition(), velocity, 90, body.getAngularVelocity(), level);
+        Square sq2 = new Square(body.getPosition(), velocity, 180, body.getAngularVelocity(), level);
+        Scene.squares.add(sq);
+        Scene.squares.add(sq2);
+        Scene.squares.trimToSize();*/
+    }
+    
     
 }

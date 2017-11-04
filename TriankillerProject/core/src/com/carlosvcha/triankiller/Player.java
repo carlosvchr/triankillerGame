@@ -86,6 +86,8 @@ public class Player {
 
         body.createFixture(fixtureDef);
         shape.dispose();
+        
+        body.setUserData(this);
     }
     
     public void update(){

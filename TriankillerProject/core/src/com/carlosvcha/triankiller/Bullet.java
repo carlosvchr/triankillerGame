@@ -64,6 +64,7 @@ public class Bullet {
                 (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );
         
         body.applyForceToCenter(velx, vely, true);
+        body.setUserData(this);
     }
     
     public void update(){
@@ -77,6 +78,13 @@ public class Bullet {
     
     public void dispose(){
         tex.dispose();
+        boolean itExists = false;
+        for(int i=0; i<Scene.scheduledForRemoval.size(); i++){
+            if(Scene.scheduledForRemoval.get(i).equals(body)){
+                itExists = true;
+            }
+        }
+        if(!itExists){Scene.scheduledForRemoval.add(body);}
     }
     
     public Body getBody(){

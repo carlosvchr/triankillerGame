@@ -19,8 +19,11 @@ import java.util.ArrayList;
 public class Scene extends ApplicationAdapter {
     
     static ArrayList<Bullet> bullets;
-    ArrayList<Wall> walls;
-    ArrayList<Square> squares;
+    static ArrayList<Wall> walls;
+    static ArrayList<Square> squares;
+    
+    static ArrayList<Body> scheduledForRemoval;
+    static ArrayList<BodyDef> scheduledForAddition;
     
     private final boolean DEBUG = true;
     
@@ -39,6 +42,7 @@ public class Scene extends ApplicationAdapter {
     @Override
     public void create () {
         world = new World(new Vector2(0, 0),true);
+        world.setContactListener(new CollisionManager());
         debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());       
         setFieldLimits();
@@ -54,6 +58,8 @@ public class Scene extends ApplicationAdapter {
 
         batch = new SpriteBatch();
 
+        scheduledForRemoval = new ArrayList<Body>();
+        scheduledForAddition = new ArrayList<BodyDef>();
     }
     
     public void setFieldLimits(){
@@ -122,6 +128,10 @@ public class Scene extends ApplicationAdapter {
     public void render () {
         camera.update();
         world.step(1f/60f, 6, 2);
+        for(int i=0; i<scheduledForRemoval.size(); i++){
+            world.destroyBody(scheduledForRemoval.get(i));
+        }
+        scheduledForRemoval.clear();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -175,9 +185,9 @@ public class Scene extends ApplicationAdapter {
     }
 
     private void genSquares(){
-        Square sq = new Square(new Vector2(0,0), 5, 180, 200);
-        squares.add(sq);
+        squares.add(new Square(new Vector2(0,0), 5, 180, 200, 6));
     }
+    
     
     @Override
     public void dispose () {
