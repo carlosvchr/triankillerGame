@@ -44,8 +44,7 @@ public class Square {
              
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set((sp.getX() + sp.getWidth()/2) / Scene.PIXELS_TO_METERS,
-                (sp.getY() + sp.getHeight()/2) / Scene.PIXELS_TO_METERS);
+        bodyDef.position.set(pos);
 
         bodyDef.bullet = true;
         body = Scene.world.createBody(bodyDef);
@@ -91,7 +90,7 @@ public class Square {
     public void splitSquare(){
         float velocity = (float) Math.sqrt(Math.pow(body.getLinearVelocity().x,2)+Math.pow(body.getLinearVelocity().y, 2));
         if(level > 0){
-            Square sq = new Square(new Vector2(body.getPosition().x/Scene.PIXELS_TO_METERS, body.getPosition().y/Scene.PIXELS_TO_METERS), velocity, 90, body.getAngularVelocity(), level-1);
+            Square sq = new Square(body.getPosition(), velocity, 90, body.getAngularVelocity(), level-1);
             Square sq2 = new Square(body.getPosition(), velocity, 180, body.getAngularVelocity(), level-1);
             Scene.squares.add(sq);
             Scene.squares.add(sq2);
