@@ -21,17 +21,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  */
 public class Bullet {
     
-    private final Texture tex;
     private final Sprite sp;
     private final float vel;
     private final float velx, vely;
     
     private Body body;
     
-    public Bullet(Vector2 position, float angle, float bulletVel){
-        tex = new Texture("bullet01tex.png");
-        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        sp = new Sprite(tex);
+    public Bullet(Vector2 position, float angle, float bulletVel){      
+        sp = new Sprite(Scene.assetLoader.bullettex);
         sp.setScale(0.3f);
         this.vel = bulletVel;
         
@@ -77,7 +74,6 @@ public class Bullet {
     }
     
     public void dispose(){
-        tex.dispose();
         boolean itExists = false;
         for(int i=0; i<Scene.scheduledForRemoval.size(); i++){
             if(Scene.scheduledForRemoval.get(i).equals(body)){

@@ -47,6 +47,7 @@ public class CollisionManager implements ContactListener{
         b.dispose();
         Scene.bullets.remove(b);
         s.splitSquare();
+        Scene.squares.remove(s);
     }
     
 }

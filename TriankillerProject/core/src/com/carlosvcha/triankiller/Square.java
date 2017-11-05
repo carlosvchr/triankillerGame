@@ -20,24 +20,28 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  */
 public class Square {
     
-    private final Texture tex;
     private final Sprite sp;
     private float rotVel;
     private float vel;
     private float dir;
     private Body body;
     private int level;
+    Vector2 pos;
     
     public Square(Vector2 pos, float vel, float direction, float rotVel, int level){
-        tex = new Texture("square01tex.png");
-        sp = new Sprite(tex);
-        //sp.setScale(level/10);
-        this.level = level;
-        
-        this.rotVel = rotVel;
+        this.pos = pos;
         this.vel = vel;
         this.dir = direction;
+        this.rotVel = rotVel;
+        this.level = level;
         
+        sp = new Sprite(Scene.assetLoader.squaretex[level]);
+        
+        Scene.scheduledSquaresForAddition.add(this);
+    }
+    
+    public void create(){
+             
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set((sp.getX() + sp.getWidth()/2) / Scene.PIXELS_TO_METERS,
@@ -75,19 +79,25 @@ public class Square {
     }
     
     public void dispose(){
-        tex.dispose();
-        Scene.world.destroyBody(body);
+        boolean itExists = false;
+        for(int i=0; i<Scene.scheduledForRemoval.size(); i++){
+            if(Scene.scheduledForRemoval.get(i).equals(body)){
+                itExists = true;
+            }
+        }
+        if(!itExists){Scene.scheduledForRemoval.add(body);}
     }
     
     public void splitSquare(){
-        /*this.dispose();
-        Scene.squares.remove(this);
         float velocity = (float) Math.sqrt(Math.pow(body.getLinearVelocity().x,2)+Math.pow(body.getLinearVelocity().y, 2));
-        Square sq = new Square(body.getPosition(), velocity, 90, body.getAngularVelocity(), level);
-        Square sq2 = new Square(body.getPosition(), velocity, 180, body.getAngularVelocity(), level);
-        Scene.squares.add(sq);
-        Scene.squares.add(sq2);
-        Scene.squares.trimToSize();*/
+        if(level > 0){
+            Square sq = new Square(new Vector2(body.getPosition().x/Scene.PIXELS_TO_METERS, body.getPosition().y/Scene.PIXELS_TO_METERS), velocity, 90, body.getAngularVelocity(), level-1);
+            Square sq2 = new Square(body.getPosition(), velocity, 180, body.getAngularVelocity(), level-1);
+            Scene.squares.add(sq);
+            Scene.squares.add(sq2);
+            Scene.squares.trimToSize();
+        }
+        this.dispose();
     }
     
     

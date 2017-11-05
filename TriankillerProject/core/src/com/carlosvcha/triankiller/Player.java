@@ -27,8 +27,7 @@ public class Player {
     public static final int MOVE_LEFT = 3;
     
     private float vel = 7f;
-    
-    private final Texture tex;
+
     private final Sprite sp;
     boolean movingUp, movingDown, movingRight, movingLeft, shooting, shooting2;
     private Weapon weapon[];
@@ -39,9 +38,7 @@ public class Player {
     private Body body;
     
     public Player(){
-        tex = new Texture("playertex.png");
-        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        sp = new Sprite(tex);
+        sp = new Sprite(Scene.assetLoader.playertex);
         sp.setPosition(0, 0);
         sp.setScale(0.5f);
         
@@ -157,7 +154,7 @@ public class Player {
     }
     
     public void dispose(){
-        tex.dispose();
+
     }
     
     public String txtPosition(){

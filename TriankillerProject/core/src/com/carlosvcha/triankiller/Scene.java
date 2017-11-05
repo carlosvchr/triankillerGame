@@ -23,7 +23,8 @@ public class Scene extends ApplicationAdapter {
     static ArrayList<Square> squares;
     
     static ArrayList<Body> scheduledForRemoval;
-    static ArrayList<BodyDef> scheduledForAddition;
+    static ArrayList<Square> scheduledSquaresForAddition;
+    static AssetLoader assetLoader;
     
     private final boolean DEBUG = true;
     
@@ -44,7 +45,9 @@ public class Scene extends ApplicationAdapter {
         world = new World(new Vector2(0, 0),true);
         world.setContactListener(new CollisionManager());
         debugRenderer = new Box2DDebugRenderer();
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());       
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());      
+        assetLoader = new AssetLoader();        
+        
         setFieldLimits();
         
         player = new Player();
@@ -59,7 +62,7 @@ public class Scene extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         scheduledForRemoval = new ArrayList<Body>();
-        scheduledForAddition = new ArrayList<BodyDef>();
+        scheduledSquaresForAddition = new ArrayList<Square>();
     }
     
     public void setFieldLimits(){
@@ -132,6 +135,11 @@ public class Scene extends ApplicationAdapter {
             world.destroyBody(scheduledForRemoval.get(i));
         }
         scheduledForRemoval.clear();
+        
+        for(int i=0; i<scheduledSquaresForAddition.size(); i++){
+            scheduledSquaresForAddition.get(i).create();
+        }
+        scheduledSquaresForAddition.clear();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -180,12 +188,13 @@ public class Scene extends ApplicationAdapter {
         }
         
         if(DEBUG){
-            System.out.println("FPS:"+Gdx.graphics.getFramesPerSecond()+"\tBullets:" + bullets.size());
+            System.out.println("FPS:"+Gdx.graphics.getFramesPerSecond()+"\tBullets:" + bullets.size()+
+                    "\tSquares:"+squares.size());
         }   
     }
 
     private void genSquares(){
-        squares.add(new Square(new Vector2(0,0), 5, 180, 200, 6));
+        squares.add(new Square(new Vector2(0,0), 5, 180, 200, 5));
     }
     
     
@@ -205,5 +214,6 @@ public class Scene extends ApplicationAdapter {
         bullets.clear();
         walls.clear();
         squares.clear();
+        assetLoader.dispose();
     }
 }
