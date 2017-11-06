@@ -48,6 +48,10 @@ public class Scene extends ApplicationAdapter {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());      
         assetLoader = new AssetLoader();        
         
+        // Mouse locker
+        Gdx.input.setCursorCatched(true);
+        Gdx.input.setCursorPosition(0,0);
+        
         setFieldLimits();
         
         player = new Player();
@@ -141,7 +145,7 @@ public class Scene extends ApplicationAdapter {
         }
         scheduledSquaresForAddition.clear();
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         update();
@@ -183,11 +187,10 @@ public class Scene extends ApplicationAdapter {
             squares.get(i).update();
         }
         
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-            genSquares();
-        }
-        
         if(DEBUG){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.N)){
+                genSquares();
+            }
             System.out.println("FPS:"+Gdx.graphics.getFramesPerSecond()+"\tBullets:" + bullets.size()+
                     "\tSquares:"+squares.size());
         }   

@@ -23,8 +23,20 @@ public class CollisionManager implements ContactListener{
         if(objA instanceof Bullet && objB instanceof Square){
             bulletSquareCol((Bullet)objA, (Square)objB);
         }
-        if(objA instanceof Square && objB instanceof Bullet){
+        else if(objA instanceof Square && objB instanceof Bullet){
             bulletSquareCol((Bullet)objB, (Square)objA);
+        }
+        else{
+            if(objA instanceof Bullet && !(objB instanceof Player)){
+                Bullet b = (Bullet)objA;
+                b.dispose();
+                Scene.bullets.remove(b);
+            }
+            if(objB instanceof Bullet && !(objA instanceof Player)){
+                Bullet b = (Bullet)objB;
+                b.dispose();
+                Scene.bullets.remove(b);
+            }
         }
     }
 

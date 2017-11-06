@@ -29,7 +29,8 @@ public class Player {
     private float vel = 7f;
 
     private final Sprite sp;
-    boolean movingUp, movingDown, movingRight, movingLeft, shooting, shooting2;
+    boolean movingUp, movingDown, movingRight, movingLeft, shooting, shooting2,
+            turnUp, turnDown, turnRight, turnLeft;
     private Weapon weapon[];
     private int maxWeapons;
     private int currentWeapon;   
@@ -48,6 +49,10 @@ public class Player {
         movingLeft = false;
         shooting = false;
         shooting2 = false;
+        turnUp = false;
+        turnDown = false;
+        turnLeft = false;
+        turnRight = false;
         
         maxWeapons = 3;
         
@@ -95,17 +100,31 @@ public class Player {
         if(movingRight){move(Player.MOVE_RIGHT);}
         if(shooting){shoot();}
         if(shooting2){secondaryAttack();}
+        if(turnUp && turnRight){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(315));
+        }else if(turnUp && turnLeft){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(45));
+        }else if(turnUp){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(0));
+        }else if(turnDown && turnRight){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(225));
+        }else if(turnDown && turnLeft){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(135));
+        }else if(turnDown){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(180));
+        }else if(turnRight){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(270));
+        }else if(turnLeft){
+            body.setTransform(body.getPosition(), (float) Math.toRadians(90));
+        }
         
-        updateRotation();
         sp.setPosition((body.getPosition().x * Scene.PIXELS_TO_METERS) - sp.getWidth()/2 ,
                 (body.getPosition().y * Scene.PIXELS_TO_METERS) - sp.getHeight()/2 );
         sp.setRotation((float)Math.toDegrees(body.getAngle()));
     }
+
     
-    public void updateRotation(){
-        float px = Gdx.input.getX()/Scene.PIXELS_TO_METERS - Gdx.graphics.getWidth()/2/Scene.PIXELS_TO_METERS;
-        float py = (Gdx.graphics.getHeight()-Gdx.input.getY())/Scene.PIXELS_TO_METERS - Gdx.graphics.getHeight()/2/Scene.PIXELS_TO_METERS;
-        float angle = (float)( 3*Math.PI/2 + Math.atan2(py - body.getPosition().y, px - body.getPosition().x));
+    public void updateRotation(float angle){
         body.setTransform(body.getPosition(), angle);
     }
     

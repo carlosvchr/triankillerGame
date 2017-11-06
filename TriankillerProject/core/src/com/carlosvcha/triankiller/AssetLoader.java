@@ -22,8 +22,8 @@ public class AssetLoader {
     public AssetLoader(){
         mainTexture = new Texture("sprites_tex.png");
         mainTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        playertex = new TextureRegion(mainTexture, 0, 0, 64, 64);
-        walltex = new TextureRegion(mainTexture, 65, 0, 64, 64);
+        playertex = new TextureRegion(mainTexture, 0, 0, 63, 63);
+        walltex = new TextureRegion(mainTexture, 64, 0, 64, 64);
         bullettex = new TextureRegion(mainTexture, 128, 32, 32, 32);
         squaretex = new TextureRegion[6];
         squaretex[5] = new TextureRegion(mainTexture, 160, 0, 200, 200);

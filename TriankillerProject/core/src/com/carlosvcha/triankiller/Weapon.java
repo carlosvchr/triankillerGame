@@ -27,16 +27,16 @@ public class Weapon {
         
         switch(weapon){
             case REGULAR:
-                cooldownTime = 200;
-                bulletVel = 0.15f;
+                cooldownTime = 300;
+                bulletVel = 0.5f;
                 break;
             case FAST:
-                cooldownTime = 50;
-                bulletVel = 0.3f;
+                cooldownTime = 200;
+                bulletVel = 0.8f;
                 break;
             case SLOW:
-                cooldownTime = 500;
-                bulletVel = 0.05f;
+                cooldownTime = 400;
+                bulletVel = 0.3f;
                 break;
         }
         
